@@ -44,7 +44,7 @@
 
 	<script>
 
-		class ContainerSticky extends GrainScrollBehavior(GrainUpdateInlineStyleBehavior(GrainResponsiveBehavior(Polymer.Element))) {
+		class GrainSticky extends GrainScrollBehavior(GrainUpdateInlineStyleBehavior(GrainResponsiveBehavior(Polymer.Element))) {
 
 			static get is() { return 'grain-sticky' }
 
@@ -80,6 +80,6 @@
 		}
 
 		// Register custom element definition using standard platform API
-		customElements.define(ContainerSticky.is, ContainerSticky);
+		customElements.define(GrainSticky.is, GrainSticky);
 	</script>
 </dom-module>
