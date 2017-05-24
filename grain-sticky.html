@@ -1,0 +1,85 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../grain-update-inline-style-behavior/grain-update-inline-style-behavior.html">
+<link rel="import" href="../grain-responsive-behavior/grain-responsive-behavior.html">
+<link rel="import" href="../grain-scroll-behavior/grain-scroll-behavior.html">
+
+<dom-module id="grain-sticky">
+	<template>
+		<style>
+			:host {
+				--width: 100%;
+				--mobile-width: 100%;
+				--tablet-width: 100%;
+
+				width: var(--width);
+
+				position: fixed;
+				top: 0;
+				left: 0;
+				text-align: center;
+				z-index: 100;
+				transition: transform 0.4s ease-in-out, opacity 0.5s ease-in-out;
+			}
+
+			:host([is-mobile]) {
+				width: var(--mobile-width);
+			}
+			:host([is-tablet]) {
+				width: var(--tablet-width);
+			}
+
+			:host([shown=false]) {
+				opacity: 0;
+				transform: translate(0, -100%);
+			}
+
+			:host([shown=true]) {
+				opacity: 1;
+				transform: translate(0, 0);
+			}
+		</style>
+
+		<slot></slot>
+	</template>
+
+	<script>
+
+		class ContainerSticky extends GrainScrollBehavior(GrainUpdateInlineStyleBehavior(GrainResponsiveBehavior(Polymer.Element))) {
+
+			static get is() { return 'grain-sticky' }
+
+			static get properties() {
+				return {
+					showFrom: {
+						type: String,
+						reflectToAttribute: true
+					},
+					shown: {
+						type: String,
+						reflectToAttribute: true,
+						value: 'true'
+					}
+				};
+			}
+
+			ready() {
+				super.ready();
+				if (this.showFrom) {
+					this.scrollLoop();
+				}
+			}
+
+			onScroll(scrollTop) {
+				if (scrollTop > this.vhToPx(this.showFrom)) {
+					this.shown = 'true';
+				} else {
+					this.shown = 'false';
+				}
+			}
+
+		}
+
+		// Register custom element definition using standard platform API
+		customElements.define(ContainerSticky.is, ContainerSticky);
+	</script>
+</dom-module>
